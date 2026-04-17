@@ -39,17 +39,9 @@
 
 ## 安装说明
 
-### 选项 1：使用npx安装
+### 使用npx安装
 ```bash
 npx skills add Charry-039/skills --path git-batch-commit
-```
-
-### 选项 2：克隆至本地skills目录 (示例)
-以在 Claude Code 中使用为例，可克隆至如下路径：
-
-```bash
-cd ~/.claude/skills/
-git clone https://github.com/Charry-039/skills/git-batch-commit.git
 ```
 
 ---
@@ -247,18 +239,9 @@ Compatible with any AI agent terminal or editor that can load a skill folder and
 
 ## Installation
 
-### Option 1: Using npx
+### Using npx
 ```bash
 npx skills add Charry-039/skills --path git-batch-commit
-```
-
-### Option 2: Clone to a Local Skills Directory (Example)
-
-Example path for Claude Code:
-
-```bash
-cd ~/.claude/skills/
-git clone https://github.com/Charry-039/skills/git-batch-commit.git
 ```
 
 ---
