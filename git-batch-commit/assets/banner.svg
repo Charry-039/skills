@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 300" width="100%" height="100%">
+  <defs>
+    <!-- 背景渐变 -->
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0d1117" />
+      <stop offset="100%" stop-color="#161b22" />
+    </linearGradient>
+    
+    <!-- 强调色渐变 (Git 橙色) -->
+    <linearGradient id="gitOrange" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#F1502F" />
+      <stop offset="100%" stop-color="#FF7B5E" />
+    </linearGradient>
+
+    <!-- 背景网格图案 -->
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#30363d" stroke-width="0.5" opacity="0.3"/>
+    </pattern>
+  </defs>
+
+  <!-- 背景底色和网格 -->
+  <rect width="1200" height="300" fill="url(#bg)" />
+  <rect width="1200" height="300" fill="url(#grid)" />
+
+  <!-- 左侧图形：Git 节点网络 -->
+  <g opacity="0.15" transform="translate(50, 50)">
+    <path d="M 0 100 Q 150 100 200 50 T 400 50" fill="none" stroke="#F1502F" stroke-width="4" />
+    <path d="M 0 100 Q 150 100 200 150 T 400 150" fill="none" stroke="#58a6ff" stroke-width="4" />
+    <circle cx="200" cy="50" r="8" fill="#F1502F" />
+    <circle cx="200" cy="150" r="8" fill="#58a6ff" />
+    <circle cx="0" cy="100" r="12" fill="#fff" />
+  </g>
+
+  <!-- 左侧文字内容 -->
+  <g transform="translate(80, 130)">
+    <!-- 徽章 -->
+    <rect x="0" y="-70" width="80" height="26" rx="13" fill="#238636" fill-opacity="0.2" stroke="#238636" stroke-width="1"/>
+    <text x="15" y="-53" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#3fb950">TOOL</text>
+
+    <!-- 主标题 -->
+    <text x="0" y="10" font-family="system-ui, -apple-system, sans-serif" font-size="64" font-weight="900" fill="#ffffff" letter-spacing="-1">
+      Git Batch <tspan fill="url(#gitOrange)">Commit</tspan>
+    </text>
+    
+    <!-- 副标题 -->
+    <text x="0" y="60" font-family="system-ui, -apple-system, sans-serif" font-size="22" font-weight="400" fill="#8b949e">
+      🚀 高效、自动化的 Git 批量提交工作流利器
+    </text>
+  </g>
+
+  <!-- 右侧图形：终端窗口 -->
+  <g transform="translate(700, 45)">
+    <!-- 终端背景 -->
+    <rect width="420" height="210" rx="12" fill="#010409" stroke="#30363d" stroke-width="1.5" />
+    
+    <!-- 终端顶部控制按钮 (Mac风格) -->
+    <rect width="420" height="36" rx="12" fill="#161b22" />
+    <path d="M0 24 L420 24 L420 36 L0 36 Z" fill="#161b22" /> <!-- 遮盖底部圆角 -->
+    <circle cx="20" cy="18" r="6" fill="#ff5f56" />
+    <circle cx="40" cy="18" r="6" fill="#ffbd2e" />
+    <circle cx="60" cy="18" r="6" fill="#27c93f" />
+    <text x="210" y="22" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#8b949e" text-anchor="middle">bash - git-batch-commit</text>
+    <line x1="0" y1="36" x2="420" y2="36" stroke="#30363d" stroke-width="1.5" />
+
+    <!-- 终端代码内容 -->
+    <g font-family="ui-monospace, SFMono-Regular, Consolas, monospace" font-size="14">
+      <text x="20" y="70" fill="#58a6ff">$</text>
+      <text x="35" y="70" fill="#c9d1d9">/git-batch-commit</text>
+      
+      <text x="20" y="105" fill="#8b949e">Scanning workspace...</text>
+      <text x="20" y="130" fill="#8b949e">Found 3 modified files.</text>
+      
+      <text x="20" y="165" fill="#3fb950">✔</text>
+      <text x="40" y="165" fill="#e6edf3">feat: update core logic</text>
+      
+      <text x="20" y="190" fill="#3fb950">✔</text>
+      <text x="40" y="190" fill="#e6edf3">docs: update README.md</text>
+    </g>
+  </g>
+</svg>
