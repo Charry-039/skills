@@ -1,45 +1,12 @@
+<div align="center">
+  <img src="./git-batch-commit/assets/banner.svg" alt="git-batch-commit banner" width="100%" />
+</div>
+
 <p align="center">
-  <a href="#english">English</a> | <a href="#chinese">中文</a>
+  <a href="#chinese">中文</a> | <a href="#english">English</a>
 </p>
 
 ---
-<a name="english"></a>
-
-# skills
-
-A collection of production-grade agent skills for Claude Code and other AI agent terminals.
-
-<p align="center">
-  <img src="https://img.shields.io/badge/Skills-1-blue" alt="1 Skill" />
-  <img src="https://img.shields.io/badge/License-MIT-yellow" alt="MIT License" />
-</p>
-
-## Skills
-
-| Skill | Description | Install |
-|-------|-------------|---------|
-| [**Git Batch Commit**](./git-batch-commit/) | Automatically organize staged Git changes into unit-level, intent-based commits with gitmoji-style messages in English. | `npx skills add <owner>/<repo> --path git-batch-commit` |
-
-## Quick Start
-
-Install any skill with:
-
-```bash
-npx skills add Charry-039/skills --path <skill-path>
-```
-
-Then invoke in your agent terminal:
-
-```bash
-/git-batch-commit    # Organize staged changes into intent-based commits
-```
-
-## License
-
-MIT
-
-
-
 <a name="chinese"></a>
 
 # skills
@@ -72,5 +39,40 @@ npx skills add Charry-039/skills --path <skill-path>
 ```
 
 ## 许可证
+
+MIT
+
+<a name="english"></a>
+
+# skills
+
+A collection of production-grade agent skills for Claude Code and other AI agent terminals.
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Skills-1-blue" alt="1 Skill" />
+  <img src="https://img.shields.io/badge/License-MIT-yellow" alt="MIT License" />
+</p>
+
+## Skills
+
+| Skill | Description | Install |
+|-------|-------------|---------|
+| [**Git Batch Commit**](./git-batch-commit/) | Automatically organize staged Git changes into unit-level, intent-based commits with gitmoji-style messages in English. | `npx skills add <owner>/<repo> --path git-batch-commit` |
+
+## Quick Start
+
+Install any skill with:
+
+```bash
+npx skills add Charry-039/skills --path <skill-path>
+```
+
+Then invoke in your agent terminal:
+
+```bash
+/git-batch-commit    # Organize staged changes into intent-based commits
+```
+
+## License
 
 MIT
