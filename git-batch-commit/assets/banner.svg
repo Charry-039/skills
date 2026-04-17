@@ -93,7 +93,7 @@
 
     <!-- C. 副标题 -->
     <text x="5" y="68" font-family="system-ui, -apple-system, sans-serif" font-size="32" font-weight="500" fill="#334155" letter-spacing="0">
-      Automated Multi-File Commit Engine
+      Automated Multi-File Commit Skill for Git
     </text>
   </g>
 </svg>
