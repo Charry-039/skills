@@ -1,7 +1,3 @@
-<div align="center">
-  <img src="./git-batch-commit/assets/banner.svg" alt="git-batch-commit banner" width="100%" />
-</div>
-
 <p align="center">
   <a href="#chinese">中文</a> | <a href="#english">English</a>
 </p>
