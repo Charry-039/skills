@@ -48,7 +48,7 @@ npx skills add Charry-039/skills --path git-batch-commit
 以在 Claude Code 中使用为例，可克隆至如下路径：
 
 ```bash
-cd ~/.claude-code/skills/
+cd ~/.claude/skills/
 git clone https://github.com/Charry-039/skills/git-batch-commit.git
 ```
 
@@ -257,7 +257,7 @@ npx skills add Charry-039/skills --path git-batch-commit
 Example path for Claude Code:
 
 ```bash
-cd ~/.claude-code/skills/
+cd ~/.claude/skills/
 git clone https://github.com/Charry-039/skills/git-batch-commit.git
 ```
 
