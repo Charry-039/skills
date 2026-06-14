@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """
-batch-commit.py - Run git commits in batches (based on a manifest file)
+batch-commit.py - 基于清单文件批量运行 git 提交
 Usage:
-    python scripts/batch-commit.py                    # run
-    python scripts/batch-commit.py --dry-run          # preview
-    python scripts/batch-commit.py --rollback-on-fail  # rollback on failure
+    python scripts/batch-commit.py                    # 执行提交
+    python scripts/batch-commit.py --dry-run          # 空运行预览
+    python scripts/batch-commit.py --rollback-on-fail  # 失败时自动回滚
 
 Cross-platform: Windows / Linux / macOS
 """
@@ -17,31 +17,31 @@ import sys
 
 
 def run(cmd, check=True, capture=True):
-    """Run a git command, return result."""
+    """运行 git 命令，返回结果。"""
     result = subprocess.run(
         cmd, shell=True, capture_output=capture, text=True
     )
     if check and result.returncode != 0:
-        raise RuntimeError(f"Command failed: {cmd}\n{result.stderr}")
+        raise RuntimeError(f"命令执行失败: {cmd}\n{result.stderr}")
     return result
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Run git commits in batches")
-    parser.add_argument("--dry-run", action="store_true", help="Preview only, no commits")
-    parser.add_argument("--rollback-on-fail", action="store_true", help="Rollback on failure")
+    parser = argparse.ArgumentParser(description="按批次运行 git 提交")
+    parser.add_argument("--dry-run", action="store_true", help="仅预览，不提交")
+    parser.add_argument("--rollback-on-fail", action="store_true", help="失败时回滚")
     args = parser.parse_args()
 
     manifest_file = ".git-batch-manifest.json"
 
     if not os.path.exists(manifest_file):
-        print(f"Error: manifest file not found: {manifest_file}")
-        print("Please generate a grouping plan first (run the git-batch-commit skill).")
+        print(f"错误：未找到清单文件: {manifest_file}")
+        print("请先生成分组计划（运行 git-batch-commit skill）。")
         sys.exit(1)
 
-    print(f">>> Read manifest: {manifest_file}")
+    print(f">>> 读取清单: {manifest_file}")
     if args.dry_run:
-        print(">>> Mode: DRY-RUN (preview only, no commits)")
+        print(">>> 模式: 空运行（仅预览，不提交）")
     print()
 
     with open(manifest_file, "r", encoding="utf-8") as f:
@@ -50,9 +50,9 @@ def main():
     commits = manifest.get("commits", [])
     total = len(commits)
 
-    # Save current HEAD for rollback
+    # 保存当前 HEAD 以便回滚
     original_head = run("git rev-parse HEAD", check=True, capture=True).stdout.strip()
-    print(f">>> Current HEAD: {original_head}")
+    print(f">>> 当前 HEAD: {original_head}")
 
     successful = []
 
@@ -61,12 +61,12 @@ def main():
         files = item.get("files", [])
 
         if not msg or not files:
-            print(f"Warning: commit {idx} missing message or files, skipping")
+            print(f"警告：第 {idx} 个提交缺少 message 或 files，已跳过")
             continue
 
         print(f">>> [{idx}/{total}] {msg}")
 
-        # Expand glob patterns
+        # 展开 glob 模式
         expanded = []
         for pattern in files:
             matched = glob.glob(pattern, recursive=True)
@@ -78,64 +78,64 @@ def main():
                 expanded.append(pattern)
 
         expanded = sorted(set(expanded))
-        print(f"    File patterns: {', '.join(files)}")
-        print(f"    Expanded:      {', '.join(expanded)}")
+        print(f"    文件模式: {', '.join(files)}")
+        print(f"    展开结果: {', '.join(expanded)}")
 
         if args.dry_run:
-            # Dry-run: simulate git add without staging
+            # 空运行：模拟 git add，不实际暂存
             run("git reset HEAD --quiet", check=True)
             file_list = " ".join(f'"{f}"' for f in expanded)
             run(f"git add --dry-run {file_list}", check=True, capture=True)
-            print(f"    [DRY-RUN] git add {' '.join(expanded)}")
-            print(f"    [DRY-RUN] git commit -m \"{msg}\"")
-            print("    >>> Dry-run: this commit would succeed")
+            print(f"    [空运行] git add {' '.join(expanded)}")
+            print(f"    [空运行] git commit -m \"{msg}\"")
+            print("    >>> 空运行：该提交将成功执行")
         else:
-            # Execute
+            # 执行提交
             run("git reset HEAD --quiet", check=True)
             file_list = " ".join(f'"{f}"' for f in expanded)
             run(f"git add {file_list}", check=True)
 
             staged = run("git diff --cached --name-only", check=True, capture=True).stdout.strip()
-            print(f"    Staged: {staged or '(none)'}")
+            print(f"    已暂存: {staged or '(无)'}")
 
             result = run(f'git commit -m "{msg}"', check=False, capture=True)
 
             if result.returncode == 0:
                 commit_hash = run("git rev-parse --short HEAD", check=True, capture=True).stdout.strip()
-                print(f"    >>> Commit succeeded ({commit_hash})")
+                print(f"    >>> 提交成功 ({commit_hash})")
                 successful.append((msg, commit_hash))
             else:
-                print(f"    >>> Commit failed: {result.stderr.strip()}")
+                print(f"    >>> 提交失败: {result.stderr.strip()}")
                 run("git reset HEAD --quiet", check=True)
 
                 if args.rollback_on_fail and successful:
-                    print(f"\n!!! Rollback mode enabled, resetting to: {original_head}")
+                    print(f"\n!!! 已启用回滚模式，重置到: {original_head}")
                     run(f"git reset --hard {original_head}", check=True)
-                    print(f"Rolled back {len(successful)} commits")
+                    print(f"已回滚 {len(successful)} 个提交")
                 elif successful:
-                    print(f"\n!!! Failed on commit {idx}. {len(successful)} commits succeeded and remain on the branch.")
+                    print(f"\n!!! 第 {idx} 个提交失败。已有 {len(successful)} 个提交成功并保留在分支上。")
                     for m, h in successful:
                         print(f"  - {m} ({h})")
-                    print("\nTo rollback, run: git reset --hard <desired-head>")
+                    print("\n如需回滚，请运行: git reset --hard <desired-head>")
                 sys.exit(1)
 
         print()
 
     if args.dry_run:
-        print("=== Dry-run complete ===")
-        print("These are the operations the script would run. No commits were created.")
-        print(f"Manifest file retained at: {manifest_file}")
-        print("When ready, run: python scripts/batch-commit.py")
+        print("=== 空运行完成 ===")
+        print("上述为脚本将执行的操作，未创建任何提交。")
+        print(f"清单文件保留在: {manifest_file}")
+        print("准备就绪后，请运行: python scripts/batch-commit.py")
     else:
         if os.path.exists(manifest_file):
             os.remove(manifest_file)
-        print("=== Execution complete ===")
-        print(f"Success: {len(successful)} commits")
+        print("=== 执行完成 ===")
+        print(f"成功: {len(successful)} 个提交")
         if successful:
-            print("Commit list:")
+            print("提交列表:")
             for msg, h in successful:
                 print(f"  - {msg} ({h})")
-        print("\nManifest file cleaned up.")
+        print("\n清单文件已清理。")
 
 
 if __name__ == "__main__":

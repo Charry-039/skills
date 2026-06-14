@@ -56,10 +56,10 @@ Priority mapping:
 ## Format
 
 ```
-:gitmoji: <type>(<scope>): <English description>
+:gitmoji: <type>(<scope>): <中文描述>
 ```
 
 Requirements:
-- Use English for description
-- Be concise and specific, describe the change intent directly
-- Prefer scope from the priority list above
+- 描述使用简体中文
+- 简洁具体，直接说明变更意图
+- 优先使用上方 Scope 优先级列表中的 scope

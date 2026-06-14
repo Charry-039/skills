@@ -1,37 +1,37 @@
-# Security & Boundaries
+# 安全规则与边界
 
-## Sensitive File List
+## 敏感文件清单
 
-The following files in staged changes must **immediately stop** and prompt user to handle manually:
+暂存区中出现以下文件时，必须**立即停止**，并提示用户手动处理：
 
-- `.env` (and variants `.env.local`, `.env.production`, etc.)
-- `*.pem`, `*.key` (private key files)
+- `.env`（以及变体 `.env.local`、`.env.production` 等）
+- `*.pem`、`*.key`（私钥文件）
 - `credentials*.json`
 - `id_rsa*`
-- `.npmrc` (may contain tokens)
+- `.npmrc`（可能包含 token）
 - `secrets.*`
-- `*.p12`, `*.pfx` (certificates)
-- `aws_*.json` (AWS credentials)
-- `gcp-*.json` (GCP credentials)
+- `*.p12`、`*.pfx`（证书）
+- `aws_*.json`（AWS 凭据）
+- `gcp-*.json`（GCP 凭据）
 - `azure-*.json`
-- Any file with `secret`, `private`, `credential` in filename
+- 文件名中包含 `secret`、`private`、`credential` 的任何文件
 
-## Mandatory Rules (NEVER)
+## 强制规则（永远禁止）
 
-- **NEVER** commit sensitive files
-- **NEVER** use `--no-verify`
-- **NEVER** use `git commit --amend` unless user explicitly requests
-- **NEVER** use `push --force`
-- If hook fails, analyze the failure reason first, then fix and create **new commit**
+- **永远**不要提交敏感文件
+- **永远**不要使用 `--no-verify`
+- **永远**不要使用 `git commit --amend`，除非用户明确要求
+- **永远**不要使用 `push --force`
+- 若 hook 失败，先分析失败原因，然后修复并创建**新的提交**
 
-## Pre-Check Items
+## 预检项
 
-Must verify before execution:
-1. Staged changes exist
-2. No sensitive files present
-3. No binary artifacts, build outputs, log files, cache files
-4. No same file exists in both staged and unstaged (avoid workflow accidentally affecting working tree state)
+执行前必须验证：
+1. 存在暂存变更
+2. 不存在敏感文件
+3. 不存在二进制产物、构建输出、日志文件、缓存文件
+4. 没有文件同时处于暂存和未暂存状态（避免工作流意外影响工作区）
 
-## Low-Confidence Grouping
+## 低置信度分组
 
-If unable to determine grouping with 100% confidence: show the plan to user first, **do not commit directly**.
+如果无法 100% 确定分组：先向用户展示计划，**不要直接提交**。

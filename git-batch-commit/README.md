@@ -11,7 +11,7 @@
 
 # git-batch-commit
 
-自动将暂存的 Git 变更按意图拆分为单元级提交，并生成英文 gitmoji 风格的提交信息。
+自动将暂存的 Git 变更按意图拆分为单元级提交，并生成 gitmoji 风格的提交信息。
 
 非常适合当 `git add .` 混入了多种类型的变更（如 ESLint / 依赖 / Swagger / DTO / 样式 / 业务逻辑）时，你想将它们拆分隔离为多个独立提交的场景。
 
@@ -79,33 +79,33 @@ git add .
 **2. 激活此技能：**
 
 ```
-按意图拆分这些分阶段文档。
+按意图拆分这些暂存的变更。
 ```
 
 **3. 随后技能将自动分析暂存区差异，并为你呈现建议的分组计划：**
 
 ```
-I identified 3 suggested commits:
+我识别出 3 个建议提交：
 
-1. :sparkles: feat(api): add response DTOs and Swagger docs
-   - Files: src/dto/response.dto.ts, src/dto/pagination.dto.ts
-   - Reason: Response models and API docs are the same unit of change
-   - Confidence: high
+1. :sparkles: feat(api): 添加响应 DTO 和 Swagger 文档
+   - 文件: src/dto/response.dto.ts, src/dto/pagination.dto.ts
+   - 理由: 响应模型与 API 文档属于同一变更单元
+   - 置信度: high
 
-2. :wrench: chore(eslint): update ESLint config and fix rule conflicts
-   - Files: eslint.config.js, package.json
-   - Reason: Toolchain configuration update
-   - Confidence: high
+2. :wrench: chore(eslint): 更新 ESLint 配置并修复规则冲突
+   - 文件: eslint.config.js, package.json
+   - 理由: 工具链配置更新
+   - 置信度: high
 
-3. :lipstick: style(styles): refine the style system
-   - Files: src/styles/theme.css
-   - Reason: Style system changes
-   - Confidence: medium
+3. :lipstick: style(styles): 优化样式系统
+   - 文件: src/styles/theme.css
+   - 理由: 样式系统变更
+   - 置信度: medium
 
-   About group 3 (confidence: medium):
-   Choose: A. keep separate  B. merge with another group  C. split  D. cancel
+   关于分组 3（置信度: medium）：
+   请选择: A. 保持独立  B. 合并到其他分组  C. 拆分  D. 取消
 
-Confirm and I will commit in this order.
+确认后我将按此顺序提交。
 ```
 
 **4. 确认后，你可以（可选）进行空运行预览：**
@@ -123,13 +123,13 @@ python3 scripts/batch-commit.py
 **6. 执行完成：**
 
 ```
-完成。已创建 3 个提交：
+批量提交完成。已创建 3 个提交：
 
 1. :sparkles: feat(api): 添加响应 DTO 和 Swagger 文档   (a1b2c3d)
 2. :wrench: chore(eslint): 更新 ESLint 配置并修复规则冲突   (e4f5g6h)
 3. :lipstick: style(styles): 统一主题 token     (i7j8k9l)
 
-你需要生成 PR 标题、描述或 CHANGELOG 条目吗？
+是否需要生成 PR 标题、描述或 CHANGELOG 条目？
 ```
 
 ---
