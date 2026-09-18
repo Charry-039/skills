@@ -1,36 +1,36 @@
-# Commit Types & Gitmoji Mapping
+# Commit Types
 
 Priority mapping:
 
-| Scenario | Conventional Type | Gitmoji |
-|----------|-------------------|---------|
-| New feature | `feat` | `:sparkles:` |
-| Bug fix | `fix` | `:bug:` |
-| Documentation | `docs` | `:memo:` |
-| Style / visual tweaks | `style` | `:lipstick:` |
-| Refactor | `refactor` | `:recycle:` |
-| Performance | `perf` | `:zap:` |
-| Test | `test` | `:white_check_mark:` |
-| Build / dependencies | `build` | `:package:` |
-| Config / toolchain / chores | `chore` | `:wrench:` |
-| CI | `ci` | `:green_heart:` |
-| Critical hotfix | `fix` | `:ambulance:` |
-| Security fix | `fix` | `:lock:` |
-| Breaking change | `feat` | `:boom:` |
-| Remove code or files | `refactor` | `:fire:` |
-| Move/rename resources | `refactor` | `:truck:` |
-| Dependency upgrade | `build` | `:arrow_up:` |
-| Dependency downgrade | `build` | `:arrow_down:` |
-| Pin dependency versions | `build` | `:pushpin:` |
-| Add dependency | `build` | `:heavy_plus_sign:` |
-| Remove dependency | `build` | `:heavy_minus_sign:` |
-| Release / version tag | `chore` | `:bookmark:` |
-| WIP | `chore` | `:construction:` |
-| Fix linter warnings | `chore` | `:rotating_light:` |
-| Add/update dev scripts | `chore` | `:hammer:` |
-| Add/update .gitignore | `chore` | `:see_no_evil:` |
-| CI build system | `ci` | `:construction_worker:` |
-| Begin a project | `chore` | `:tada:` |
+| Scenario | Conventional Type |
+|----------|-------------------|
+| New feature | `feat` |
+| Bug fix | `fix` |
+| Documentation | `docs` |
+| Style / visual tweaks | `style` |
+| Refactor | `refactor` |
+| Performance | `perf` |
+| Test | `test` |
+| Build / dependencies | `build` |
+| Config / toolchain / chores | `chore` |
+| CI | `ci` |
+| Critical hotfix | `fix` |
+| Security fix | `fix` |
+| Breaking change | `feat` |
+| Remove code or files | `refactor` |
+| Move/rename resources | `refactor` |
+| Dependency upgrade | `build` |
+| Dependency downgrade | `build` |
+| Pin dependency versions | `build` |
+| Add dependency | `build` |
+| Remove dependency | `build` |
+| Release / version tag | `chore` |
+| WIP | `chore` |
+| Fix linter warnings | `chore` |
+| Add/update dev scripts | `chore` |
+| Add/update .gitignore | `chore` |
+| CI build system | `ci` |
+| Begin a project | `chore` |
 
 ## Scope Priority List
 
@@ -38,12 +38,12 @@ Priority mapping:
 
 ## Good Examples
 
-- `:wrench: chore(eslint): update ESLint config and fix rule conflicts`
-- `:package: build(deps): add Swagger dependency and align response models`
-- `:sparkles: feat(tasks): add paginated response schema`
-- `:bug: fix(auth): validate refresh token params`
-- `:recycle: refactor(api): split shared pagination DTO`
-- `:lipstick: style(styles): update style scheme and unify theme tokens`
+- `chore(eslint): update ESLint config and fix rule conflicts`
+- `build(deps): add Swagger dependency and align response models`
+- `feat(tasks): add paginated response schema`
+- `fix(auth): validate refresh token params`
+- `refactor(api): split shared pagination DTO`
+- `style(styles): update style scheme and unify theme tokens`
 
 ## Bad Examples
 
@@ -51,12 +51,12 @@ Priority mapping:
 - `fix stuff`
 - `commit`
 - `changed a lot`
-- `:sparkles: feat: update code`
+- `feat: update code`
 
 ## Format
 
 ```
-:gitmoji: <type>(<scope>): <中文描述>
+<type>(<scope>): <中文描述>
 ```
 
 Requirements:

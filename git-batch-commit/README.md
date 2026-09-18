@@ -11,7 +11,7 @@
 
 # git-batch-commit
 
-自动将暂存的 Git 变更按意图拆分为单元级提交，并生成 gitmoji 风格的提交信息。
+自动将暂存的 Git 变更按意图拆分为单元级提交，并生成约定式提交（Conventional Commits）风格的提交信息。
 
 非常适合当 `git add .` 混入了多种类型的变更（如 ESLint / 依赖 / Swagger / DTO / 样式 / 业务逻辑）时，你想将它们拆分隔离为多个独立提交的场景。
 
@@ -87,17 +87,17 @@ git add .
 ```
 我识别出 3 个建议提交：
 
-1. :sparkles: feat(api): 添加响应 DTO 和 Swagger 文档
+1. feat(api): 添加响应 DTO 和 Swagger 文档
    - 文件: src/dto/response.dto.ts, src/dto/pagination.dto.ts
    - 理由: 响应模型与 API 文档属于同一变更单元
    - 置信度: high
 
-2. :wrench: chore(eslint): 更新 ESLint 配置并修复规则冲突
+2. chore(eslint): 更新 ESLint 配置并修复规则冲突
    - 文件: eslint.config.js, package.json
    - 理由: 工具链配置更新
    - 置信度: high
 
-3. :lipstick: style(styles): 优化样式系统
+3. style(styles): 优化样式系统
    - 文件: src/styles/theme.css
    - 理由: 样式系统变更
    - 置信度: medium
@@ -125,9 +125,9 @@ python3 scripts/batch-commit.py
 ```
 批量提交完成。已创建 3 个提交：
 
-1. :sparkles: feat(api): 添加响应 DTO 和 Swagger 文档   (a1b2c3d)
-2. :wrench: chore(eslint): 更新 ESLint 配置并修复规则冲突   (e4f5g6h)
-3. :lipstick: style(styles): 统一主题 token     (i7j8k9l)
+1. feat(api): 添加响应 DTO 和 Swagger 文档   (a1b2c3d)
+2. chore(eslint): 更新 ESLint 配置并修复规则冲突   (e4f5g6h)
+3. style(styles): 统一主题 token     (i7j8k9l)
 
 是否需要生成 PR 标题、描述或 CHANGELOG 条目？
 ```
@@ -162,7 +162,7 @@ git-batch-commit/
 
 ## 参考文献
 
-- commit-types.md: gitmoji 与约定式提交类型的映射规则
+- commit-types.md: 约定式提交类型与格式规则
 - grouping-rules.md: 基于意图的变更分组策略规范
 - security.md: 敏感文件判定与安全边界规定
 
@@ -211,7 +211,7 @@ MIT
 
 # git-batch-commit
 
-Automatically organize staged Git changes into unit-level, intent-based commits with gitmoji-style messages in English.
+Automatically organize staged Git changes into unit-level, intent-based commits with conventional commit messages in English.
 
 Ideal when `git add .` mixes multiple types of changes (ESLint / deps / Swagger / DTO / styles / business logic) and you want to split them into separate commits.
 
@@ -287,17 +287,17 @@ Split these staged files by intent.
 ```
 I identified 3 suggested commits:
 
-1. :sparkles: feat(api): add response DTOs and Swagger docs
+1. feat(api): add response DTOs and Swagger docs
    - Files: src/dto/response.dto.ts, src/dto/pagination.dto.ts
    - Reason: Response models and API docs are the same unit of change
    - Confidence: high
 
-2. :wrench: chore(eslint): update ESLint config and fix rule conflicts
+2. chore(eslint): update ESLint config and fix rule conflicts
    - Files: eslint.config.js, package.json
    - Reason: Toolchain configuration update
    - Confidence: high
 
-3. :lipstick: style(styles): refine the style system
+3. style(styles): refine the style system
    - Files: src/styles/theme.css
    - Reason: Style system changes
    - Confidence: medium
@@ -325,9 +325,9 @@ python3 scripts/batch-commit.py
 ```
 Done. Created 3 commits:
 
-1. :sparkles: feat(api): add response DTOs and Swagger docs   (a1b2c3d)
-2. :wrench: chore(eslint): update ESLint config and fix rule conflicts   (e4f5g6h)
-3. :lipstick: style(styles): unify theme tokens     (i7j8k9l)
+1. feat(api): add response DTOs and Swagger docs   (a1b2c3d)
+2. chore(eslint): update ESLint config and fix rule conflicts   (e4f5g6h)
+3. style(styles): unify theme tokens     (i7j8k9l)
 
 Do you want a PR title, description, or CHANGELOG entry?
 ```
@@ -362,7 +362,7 @@ git-batch-commit/
 
 ## References
 
-- commit-types.md: gitmoji + conventional types mapping
+- commit-types.md: conventional types mapping
 - grouping-rules.md: intent-based grouping strategy
 - security.md: sensitive file and safety boundaries
 

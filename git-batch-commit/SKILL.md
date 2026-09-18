@@ -1,6 +1,6 @@
 ---
 name: git-batch-commit
-description: "自动将暂存的 Git 变更按意图拆分为单元级提交，并生成 gitmoji 风格的提交信息。适用于一次 git add 混入了多种变更类型（eslint/依赖/swagger/dto/样式/业务逻辑）时，希望按意图生成干净、可审查的提交。按意图而非目录分组。跨平台支持 Windows/Linux/macOS。"
+description: "自动将暂存的 Git 变更按意图拆分为单元级提交，并生成约定式提交（Conventional Commits）风格的提交信息。适用于一次 git add 混入了多种变更类型（eslint/依赖/swagger/dto/样式/业务逻辑）时，希望按意图生成干净、可审查的提交。按意图而非目录分组。跨平台支持 Windows/Linux/macOS。"
 license: MIT
 ---
 
@@ -91,9 +91,9 @@ python3 scripts/check-staged.py
 
 ### 步骤 3：生成提交信息
 
-加载 `references/commit-types.md` 获取 type/gitmoji 映射与格式规则。
+加载 `references/commit-types.md` 获取 type 映射与格式规则。
 
-每组生成一条提交信息，格式为：`:gitmoji: type(scope): 中文描述`
+每组生成一条提交信息，格式为：`type(scope): 中文描述`
 
 规则：
 - 使用简体中文
@@ -148,11 +148,11 @@ python3 scripts/check-staged.py
 {
   "commits": [
     {
-      "message": ":sparkles: feat(api): 添加 tasks 模块",
+      "message": "feat(api): 添加 tasks 模块",
       "files": ["src/tasks/*.ts", "src/dto/task*.ts"]
     },
     {
-      "message": ":wrench: chore(eslint): 更新 ESLint 配置",
+      "message": "chore(eslint): 更新 ESLint 配置",
       "files": ["eslint.config.js", "package.json"]
     }
   ]
@@ -169,12 +169,19 @@ python3 scripts/check-staged.py
 
 ```bash
 python3 scripts/batch-commit.py --dry-run
+
+# 可选：跳过暂存文件覆盖度检查（仅在确认遗漏是有意为之时使用）
+python3 scripts/batch-commit.py --dry-run --force
 ```
 
 空运行展示：
 - 每次提交的具体文件列表（glob 展开后）
 - 将要运行的 git 命令
 - 清单文件保留，供后续执行或调整
+
+**空运行必须是零副作用的** —— 它只做预览，不会改动索引、不会创建提交、不会清空暂存区。
+
+**覆盖度检查（重要）：** 脚本在每个分组提交前都会执行 `git reset HEAD --quiet` 清空索引，再 `git add` 该分组的文件。因此如果某个已暂存文件没有落到任何分组里，它就会被静默取消暂存（改动不丢，但会退回未暂存状态，容易被漏提交）。脚本会在开始前校验「所有已暂存文件都被分组覆盖」，发现遗漏即中止并列出文件；确属有意遗漏时加 `--force` 跳过。
 
 **5d. 执行：**
 
@@ -240,8 +247,8 @@ feat(api): 添加响应 DTO 和 Swagger 文档
 
 ## PR 描述
 ### 变更摘要
-- `:sparkles: feat(api): 添加响应 DTO 和 Swagger 文档`
-- `:wrench: chore(eslint): 更新 ESLint 配置并修复规则冲突`
+- `feat(api): 添加响应 DTO 和 Swagger 文档`
+- `chore(eslint): 更新 ESLint 配置并修复规则冲突`
 
 ### 变更详情
 （根据提交信息简要说明每次提交的意图）
@@ -266,7 +273,7 @@ feat(api): 添加响应 DTO 和 Swagger 文档
 
 CHANGELOG 规则：
 - 按约定类型分组：`Features`、`Bug Fixes`、`Chores`、`Refactors`、`Docs`
-- 为可读性移除提交信息中的 gitmoji 与 scope
+- 为可读性移除提交信息中的 scope
 - 使用 `### [Unreleased]` 章节或追加当日日期
 - 标题：使用最重要的提交信息（优先 `feat` > `fix` > 其他）
 - 描述：按类型列出所有提交信息

@@ -2,13 +2,15 @@
 """
 batch-commit.py - 基于清单文件批量运行 git 提交
 Usage:
-    python scripts/batch-commit.py                    # 执行提交
-    python scripts/batch-commit.py --dry-run          # 空运行预览
+    python scripts/batch-commit.py                     # 执行提交
+    python scripts/batch-commit.py --dry-run           # 空运行预览（零副作用，不动索引）
     python scripts/batch-commit.py --rollback-on-fail  # 失败时自动回滚
+    python scripts/batch-commit.py --force             # 跳过暂存文件覆盖度检查
 
 Cross-platform: Windows / Linux / macOS
 """
 import argparse
+import fnmatch
 import glob
 import json
 import os
@@ -30,6 +32,7 @@ def main():
     parser = argparse.ArgumentParser(description="按批次运行 git 提交")
     parser.add_argument("--dry-run", action="store_true", help="仅预览，不提交")
     parser.add_argument("--rollback-on-fail", action="store_true", help="失败时回滚")
+    parser.add_argument("--force", action="store_true", help="跳过暂存文件覆盖度检查")
     args = parser.parse_args()
 
     manifest_file = ".git-batch-manifest.json"
@@ -50,8 +53,46 @@ def main():
     commits = manifest.get("commits", [])
     total = len(commits)
 
+    # 覆盖度预检：确保每个已暂存文件都落到某个分组。
+    # 因为每个分组提交前都会 reset 索引，未被任何分组覆盖的文件会被静默取消暂存。
+    staged_result = run("git diff --cached --name-only", check=False, capture=True)
+    original_staged = set()
+    if staged_result.returncode == 0:
+        original_staged = {
+            line for line in staged_result.stdout.splitlines() if line.strip()
+        }
+
+    if original_staged and not args.force:
+        patterns = []
+        for item in commits:
+            patterns.extend(item.get("files", []))
+
+        covered = set()
+        for pattern in patterns:
+            matched = {f for f in original_staged if fnmatch.fnmatch(f, pattern)}
+            if not matched:
+                matched = set(glob.glob(pattern, recursive=True))
+            covered |= matched
+
+        uncovered = sorted(original_staged - covered)
+        if uncovered:
+            print("!!! 覆盖度检查失败：以下已暂存文件未出现在任何分组中")
+            for name in uncovered:
+                print(f"    - {name}")
+            print("\n继续执行会清空暂存区（每个分组提交前都会 reset 索引），导致这些改动丢失。")
+            print("请修正清单后重试，或加 --force 强制跳过该检查。")
+            sys.exit(1)
+        print(f">>> 覆盖度检查通过：{len(original_staged)} 个暂存文件全部被分组覆盖")
+        print()
+
     # 保存当前 HEAD 以便回滚
-    original_head = run("git rev-parse HEAD", check=True, capture=True).stdout.strip()
+    head_result = run("git rev-parse HEAD", check=False, capture=True)
+    if head_result.returncode != 0:
+        print("!!! 无法解析 HEAD（分支可能尚无提交，或分支引用丢失）。")
+        print(f"    git rev-parse HEAD -> {head_result.stderr.strip()}")
+        print("    请先修复仓库引用状态（可用 ORIG_HEAD / .git/logs/HEAD 找回提交），再执行批量提交。")
+        sys.exit(1)
+    original_head = head_result.stdout.strip()
     print(f">>> 当前 HEAD: {original_head}")
 
     successful = []
@@ -82,8 +123,8 @@ def main():
         print(f"    展开结果: {', '.join(expanded)}")
 
         if args.dry_run:
-            # 空运行：模拟 git add，不实际暂存
-            run("git reset HEAD --quiet", check=True)
+            # 空运行：只预览，绝不改动索引。
+            # 注意：这里曾经执行真实的 `git reset HEAD --quiet`，会把用户已暂存的改动全部清空。
             file_list = " ".join(f'"{f}"' for f in expanded)
             run(f"git add --dry-run {file_list}", check=True, capture=True)
             print(f"    [空运行] git add {' '.join(expanded)}")
